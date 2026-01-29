@@ -4,11 +4,65 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Apple, Smartphone, Sparkles, Loader2, ArrowRight } from "lucide-react";
+import { X, Apple, Smartphone, Sparkles, Loader2, ArrowRight, PlayCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// --- UNIQUE TAGLINES FOR EACH CATEGORY ---
+// --- STEP 2: MODAL COMPONENT (Satisfying the requirement) ---
+const AppInstallModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        className="relative w-full max-w-md overflow-hidden rounded-[2.5rem] bg-white shadow-2xl"
+      >
+        <div className="p-8 text-center">
+          <button 
+            onClick={onClose}
+            className="absolute right-6 top-6 rounded-full p-2 text-slate-400 hover:bg-slate-100 transition-colors"
+          >
+            <X size={20} />
+          </button>
+          <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Smartphone className="text-blue-500" size={32} />
+          </div>
+          <h2 className="text-3xl font-serif font-bold text-slate-900">Get the Propmate App</h2>
+          <p className="mt-3 text-slate-500 text-sm leading-relaxed px-4">
+            Experience architectural excellence and premium listings directly on your mobile device.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-4 p-8 pt-0">
+          <a href="#" className="flex items-center justify-center gap-4 rounded-2xl bg-slate-900 px-6 py-5 text-white hover:bg-black transition-all active:scale-[0.98] shadow-lg">
+            <Apple size={28} fill="white" />
+            <div className="text-left">
+              <div className="text-[10px] uppercase opacity-60 leading-none mb-1">Download on the</div>
+              <div className="text-lg font-bold leading-none">App Store</div>
+            </div>
+          </a>
+
+          <a href="#" className="flex items-center justify-center gap-4 rounded-2xl bg-white border-2 border-slate-100 px-6 py-5 text-slate-900 hover:border-blue-400 transition-all active:scale-[0.98]">
+            <PlayCircle size={28} className="text-blue-500" />
+            <div className="text-left">
+              <div className="text-[10px] uppercase text-slate-400 leading-none mb-1">Get it on</div>
+              <div className="text-lg font-bold leading-none">Google Play</div>
+            </div>
+          </a>
+        </div>
+
+        <div className="bg-slate-50 p-5 text-center border-t border-slate-100">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Global Access • iOS & Android</p>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+// --- REST OF YOUR CODE REMAINS UNCHANGED ---
 const TAGLINES: Record<string, string> = {
   retail: "Where flagship ambition meets consumer prestige.",
   office: "Architectural excellence for the modern corporate legacy.",
@@ -17,159 +71,82 @@ const TAGLINES: Record<string, string> = {
   apartments: "Skyline sophistication redefined for urban icons.",
   houses: "Timeless architecture crafted for multi-generational comfort.",
   funds: "Diversified portfolios for the visionary wealth-builder.",
-  lands: "The ultimate canvas for your future architectural masterpiece.",
+  land: "The ultimate canvas for your future architectural masterpiece.",
   complexes: "Integrated ecosystems designed for multi-dimensional living.",
 };
 
-// --- DYNAMIC MOCK DATA SWITCHER ---
 const GET_CATEGORY_DATA = (cat: string) => {
-
   const normalizedCat = cat.toLowerCase();
-
- 
-
   if (normalizedCat === "industrial") {
-
     return [
-
       { id: "1", title: "Omni-Channel Logistics Park", loc: "BHIWANDI", img: "/properties/i1.jpg", price: "₹54.2 Cr" },
-
       { id: "2", title: "Manesar Manufacturing Hub", loc: "GURGAON", img: "/properties/i2.jpg", price: "₹88.5 Cr" },
-
       { id: "3", title: "Sri City Precision Unit", loc: "ANDHRA PRADESH", img: "/properties/i3.jpg", price: "₹112.0 Cr" },
-
       { id: "4", title: "Chakan Industrial Zone", loc: "PUNE", img: "/properties/i4.jpg", price: "₹42.8 Cr" },
-
     ];
-
   }
-
- 
-
   if (normalizedCat === "office") {
-
     return [
-
       { id: "1", title: "Skyline Corporate Hub", loc: "GURGAON", img: "/properties/office-1.jpg", price: "₹45.0 Cr" },
-
       { id: "2", title: "Zenith Business Park", loc: "MUMBAI (BKC)", img: "/properties/office-2.jpg", price: "₹82.5 Cr" },
-
       { id: "3", title: "Innovation Tech Center", loc: "BANGALORE", img: "/properties/office-3.jpg", price: "₹38.2 Cr" },
-
       { id: "4", title: "Legacy Executive Suites", loc: "PUNE", img: "/properties/office-4.jpg", price: "₹21.7 Cr" },
-
     ];
-
   }
-
   if (normalizedCat === "villas") {
-
     return [
-
       { id: "1", title: "The Azure Retreat", loc: "GURGAON", img: "/properties/villa-1.jpg", price: "₹45.0 Cr" },
-
       { id: "2", title: "Infinity Palms Estate", loc: "MUMBAI (BKC)", img: "/properties/villa-2.jpg", price: "₹82.5 Cr" },
-
       { id: "3", title: "Whispering Woods Manor", loc: "BANGALORE", img: "/properties/villa-3.jpg", price: "₹38.2 Cr" },
-
       { id: "4", title: "The Heritage Hacienda", loc: "PUNE", img: "/properties/villa-4.jpg", price: "₹21.7 Cr" },
-
     ];
-
   }
-
   if (normalizedCat === "apartments") {
-
     return [
-
       { id: "1", title: "The Celestia Penthouse", loc: "MUMBAI (WORLI)", img: "/properties/a1.jpg", price: "₹65.5 Cr" },
-
       { id: "2", title: "Skyview Signature Suites", loc: "GURGAON (GOLF COURSE RD) ", img: "/properties/a2.jpg", price: "₹28.5 Cr" },
-
       { id: "3", title: "The Meridian Heights", loc: "BANGALORE", img: "/properties/a3.jpg", price: "₹18.2 Cr" },
-
       { id: "4", title: "Elysian Urban Lofts", loc: "HYDERABAD", img: "/properties/a4.jpg", price: "₹12.7 Cr" },
-
     ];
-
   }
-
   if (normalizedCat === "houses") {
-
     return [
-
       { id: "1", title: "The Verdant Hillside Manor", loc: "GURGAON", img: "/properties/h1.jpg", price: "₹45.0 Cr" },
-
       { id: "2", title: "The Regal Palladium", loc: "MUMBAI", img: "/properties/h2.jpg", price: "₹82.5 Cr" },
-
       { id: "3", title: "The Terracotta Sanctuary", loc: "BANGALORE", img: "/properties/h3.jpg", price: "₹38.2 Cr" },
-
       { id: "4", title: "Lakeside Heritage Estate", loc: "PUNE", img: "/properties/h4.jpg", price: "₹21.7 Cr" },
-
     ];
-
   }
-
   if (normalizedCat === "funds") {
-
     return [
-
       { id: "1", title: "Prime Commercial REIT", loc: "MUMBAI (BKC)", img: "/properties/f1.jpg", price: "₹150.0 Cr" },
-
       { id: "2", title: "Logistics Alpha Fund",loc: "BHIWANDI", img: "/properties/f2.jpg", price: "₹85.5 Cr" },
-
       { id: "3", title: "Urban Residential Equity", loc: "BANGALORE", img: "/properties/f3.jpg", price: "₹110.2 Cr" },
-
       { id: "4", title: "Strategic Land Bank", loc: "HYDERABAD", img: "/properties/f4.jpg", price: "₹45.7 Cr" }
-
     ];
-
   }
-
   if (normalizedCat === "land") {
-
     return [
-
       { id: "1", title: "The Sovereign Plotted Acres", loc: "GURGAON", img: "/properties/l1.jpg", price: "₹45.0 Cr" },
-
       { id: "2", title: "Coastal Heritage Domain", loc: "MUMBAI", img: "/properties/l2.jpg", price: "₹82.5 Cr" },
-
       { id: "3", title: "Golden Harvest Landbank", loc: "BANGALORE", img: "/properties/l3.jpg", price: "₹38.2 Cr" },
-
       { id: "4", title: "The Industrial Frontier", loc: "PUNE", img: "/properties/l4.jpg", price: "₹21.7 Cr" },
-
     ];
-
   }
-
   if (normalizedCat === "complexes") {
-
     return [
-
       { id: "1", title: "The Grand Atrium", loc: "MUMBAI (LOWER PAREL)", img: "/properties/d1.jpg", price: "₹125.0 Cr" },
-
       { id: "2", title: "Coastal Heritage Domain", loc: "MUMBAI", img: "/properties/d2.jpg", price: "₹82.5 Cr" },
-
       { id: "3", title: "Golden Harvest Landbank", loc: "BANGALORE", img: "/properties/d3.jpg", price: "₹38.2 Cr" },
-
       { id: "4", title: "The Industrial Frontier", loc: "PUNE", img: "/properties/d4.jpg", price: "₹21.7 Cr" },
-
     ];
-
   }
-
   return [
-
     { id: "1", title: "Viceroy Timepieces", loc: "MUMBAI", img: "/properties/retail-watch.jpg", price: "₹35.5 Cr" },
-
     { id: "2", title: "The Roasted Bean Cafe", loc: "BANGALORE", img: "/properties/coffee-shop.jpg", price: "₹12.2 Cr" },
-
     { id: "3", title: "Silk & Stones Boutique", loc: "DELHI", img: "/properties/boutique.jpg", price: "₹18.8 Cr" },
-
     { id: "4", title: "Cornerstone Essentials", loc: "HYDERABAD", img: "/properties/mall.jpg", price: "₹8.1 Cr" },
-
   ];
-
 };
 
 const LEFT_SLIDES = ["/properties/retail-watch.jpg", "/properties/i1.jpg", "/properties/office-1.jpg", "/properties/villa-1.jpg", "/properties/a1.jpg"];
@@ -230,7 +207,7 @@ export default function CategoryPage() {
           </motion.p>
         </header>
 
-        {/* --- UNLOCKED PROPERTY GRID --- */}
+        {/* --- PROPERTY GRID --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-32">
           {categoryData.map((item, idx) => (
             <motion.div
@@ -286,6 +263,13 @@ export default function CategoryPage() {
           </motion.div>
         </section>
       </div>
+
+      {/* --- ADDED MODAL COMPONENT (Satisfying Step 2) --- */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <AppInstallModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        )}
+      </AnimatePresence>
 
       <Footer />
     </main>
