@@ -231,7 +231,7 @@ export default function CategoryPage() {
           ))}
         </div>
 
-        {/* --- FIXED WIDE SLIDESHOW BOX --- */}
+        {/* --- FIXED WIDE SLIDESHOW BOX ---
         <section className="pb-32">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full bg-white border border-slate-100 rounded-[3rem] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.06)] relative overflow-hidden group">
             <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[500px] lg:h-[550px]">
@@ -261,7 +261,86 @@ export default function CategoryPage() {
               </div>
             </div>
           </motion.div>
-        </section>
+        </section> */}
+        {/* --- VISIONARY ASYMMETRICAL CARD --- */}
+<section className="pb-40 px-6 md:px-20 overflow-visible">
+  <motion.div 
+    initial={{ opacity: 0 }} 
+    whileInView={{ opacity: 1 }} 
+    className="relative max-w-[1400px] mx-auto min-h-[600px] flex items-center justify-center"
+  >
+    {/* 1. THE GLASS BACKGROUND PANEL */}
+    <div className="absolute inset-0 bg-gradient-to-br from-white to-slate-50/50 rounded-[4rem] border border-white/80 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] backdrop-blur-xl" />
+
+    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full px-8 md:px-16">
+      
+      {/* 2. LEFT: FLOATING "FEATURE" IMAGE (Asymmetrical) */}
+      <motion.div 
+        animate={{ y: [0, -20, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="lg:col-span-4 relative group"
+      >
+        <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl rotate-[-3deg] group-hover:rotate-0 transition-all duration-700 border-[8px] border-white">
+           <AnimatePresence mode="wait">
+             <motion.img 
+               key={leftIndex} src={LEFT_SLIDES[leftIndex]} 
+               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" 
+             />
+           </AnimatePresence>
+        </div>
+        {/* Decorative Glowing Orbit */}
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-blue-400/10 blur-[80px] rounded-full" />
+      </motion.div>
+
+      {/* 3. CENTER: EDITORIAL TEXT BOX */}
+      <div className="lg:col-span-4 text-center space-y-8 py-12">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100">
+          <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.5em]">Don't Just Search it. Own it.</span>
+        </div>
+        
+        <h2 className="text-5xl md:text-7xl font-extralight text-slate-900 tracking-tighter leading-[0.9]">
+          Elevate Your <br />
+          <span className="italic font-serif font-normal text-blue-500">Perspective.</span>
+        </h2>
+        
+        <p className="text-slate-400 text-sm font-medium leading-relaxed max-w-xs mx-auto">
+          Our exclusive collection, curated for the modern visionary. Available at your fingertips.
+        </p>
+
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="group relative px-12 py-5 bg-slate-900 rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl"
+        >
+          <div className="absolute inset-0 bg-blue-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+          <span className="relative z-10 text-white font-bold text-[11px] uppercase tracking-widest">Install Propmate App</span>
+        </button>
+      </div>
+
+      {/* 4. RIGHT: OVERLAPPING GALLERY STACK */}
+      <div className="lg:col-span-4 relative flex items-center justify-end">
+        <motion.div 
+          animate={{ y: [0, 20, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="relative w-full aspect-[4/5] md:w-[80%]"
+        >
+          {/* Main Right Image */}
+          <div className="absolute inset-0 rounded-[3.5rem] overflow-hidden shadow-2xl rotate-[3deg] border-[12px] border-white z-20">
+             <AnimatePresence mode="wait">
+               <motion.img 
+                 key={rightIndex} src={RIGHT_SLIDES[rightIndex]} 
+                 className="w-full h-full object-cover" 
+               />
+             </AnimatePresence>
+          </div>
+          
+          {/* Decorative Background Card */}
+          <div className="absolute -inset-4 bg-blue-500/5 rounded-[4rem] rotate-[-6deg] z-10 border border-blue-100" />
+        </motion.div>
+      </div>
+
+    </div>
+  </motion.div>
+</section>
       </div>
 
       {/* --- ADDED MODAL COMPONENT (Satisfying Step 2) --- */}
